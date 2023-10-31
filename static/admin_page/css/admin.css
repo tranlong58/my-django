@@ -1,0 +1,15 @@
+
+
+.table td {
+    vertical-align: middle !important; 
+}
+
+td.delete-btn {
+    text-align: center;
+    width: 120px;
+}
+
+.message-no-data {
+    text-align: center;
+    font-size: 20px;
+}
