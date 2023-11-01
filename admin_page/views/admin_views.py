@@ -1,26 +1,34 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
-from django.views import generic
+import bcrypt
 
 from ..models.Admins import Admins
 
 # Create your views here.
 
-class IndexView(generic.ListView):
-    template_name = "admin_page/admin.html"
-    context_object_name = "admin_list"
-
-    def get_queryset(self):
-        return Admins.objects.all().order_by("id")
+def index(request):
+    admin_list = Admins.objects.all().order_by("id")
+    user_name = request.session.get('user_name', '')
+    context = {
+        'admin_list': admin_list,
+        'user_name': user_name,
+    }
+    return render(request, 'admin_page/admin.html', context)
 
 
 @csrf_exempt
 def create(request):
+    name = request.POST['add-name']
+    email = request.POST['add-email']
+    password = request.POST['add-password']
+    salt = bcrypt.gensalt()
+    hashPassword = bcrypt.hashpw(password.encode('utf-8'), salt)
+
     new_admin = Admins(
-        name = request.POST['add-name'],
-        email = request.POST['add-email'],
-        password = request.POST['add-password'],
+        name = name, 
+        email = email, 
+        password = hashPassword,
     )
     new_admin.save()
     return redirect('admin_page:admin-index')
@@ -31,9 +39,13 @@ def update(request):
     admin_id = request.POST['edit-id']
     updated_admin = Admins.objects.get(pk=admin_id)
 
+    password = request.POST['edit-password']
+    salt = bcrypt.gensalt()
+    hashPassword = bcrypt.hashpw(password.encode('utf-8'), salt)
+
     updated_admin.name = request.POST['edit-name']
     updated_admin.email = request.POST['edit-email']
-    updated_admin.password = request.POST['edit-password']
+    updated_admin.password = hashPassword
 
     updated_admin.save()
     return redirect('admin_page:admin-index')

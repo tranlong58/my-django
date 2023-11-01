@@ -1,12 +1,24 @@
+.w-25px {
+    width: 25px;
+}
 
+.fs-25 {
+    font-size: 25px;
+}
 
 .table td {
     vertical-align: middle !important; 
 }
 
-td.delete-btn {
+td.action-btn {
     text-align: center;
-    width: 120px;
+    width: 180px;
+}
+
+td.action-btn button {
+    width: 60px;
+    margin: 0 5px;
+    font-size: 16px;
 }
 
 .message-no-data {

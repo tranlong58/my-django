@@ -31,13 +31,13 @@ $('#modal-edit').on('show.bs.modal', function (event) {
 
     var name = td.data('name')
     var email = td.data('email')
-    var password = td.data('password')
+    // var password = td.data('password')
     var id = td.data('id')
 
     var modal = $(this)
     modal.find('.modal-body #edit-name').val(name)
     modal.find('.modal-body #edit-email').val(email)
-    modal.find('.modal-body #edit-password').val(password)
+    // modal.find('.modal-body #edit-password').val(password)
     modal.find('.modal-body #edit-id').val(id)
 });
 
